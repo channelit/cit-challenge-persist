@@ -24,6 +24,7 @@ maven-build:
     - target/*.jar
 
 docker-build:
+  image: docker:dind
   stage: package
   script:
     - docker build -t cit-challenge-persist .

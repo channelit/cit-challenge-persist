@@ -1,7 +1,7 @@
 image: docker:latest
 
 services:
-- docker:dind
+  - docker:dind
 
 variables:
   DOCKER_DRIVER: overlay2
@@ -22,7 +22,13 @@ maven-build:
     - target/*.jar
 
 docker-build:
+  image: docker:stable
+  services:
+    - docker:dind
   stage: package
+  before_script:
+    - export DOCKER_HOST="tcp://0.0.0.0:2375"
+    - docker info
   script:
     - docker build -t cit-challenge-persist .
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY

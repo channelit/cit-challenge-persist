@@ -26,6 +26,6 @@ maven-build:
 docker-build:
   stage: package
   script:
-  - docker build -t registry.gitlab.com/channelit/cit-challenge-persist .
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-  - docker push registry.gitlab.com/channelit/cit-challenge-persist
+    - docker build -t registry.gitlab.com/channelit/cit-challenge-persist .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker push registry.gitlab.com/channelit/cit-challenge-persist

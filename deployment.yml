@@ -1,19 +1,21 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: actuator-sample
+  name: challenge-persist
+  labels:
+    app: ice-challenge-persiet
 spec:
-  replicas: 2
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ice-challenge-persiet
   template:
     metadata:
       labels:
-        app: cit-challenge-persist
+        app: ice-challenge-persiet
     spec:
       containers:
-      - name: persist-container
-        image: registry.gitlab.com/marcolenzo/actuator-sample
-        imagePullPolicy: Always
+      - name: ice-challenge-persiet
+        image: registry.gitlab.com/channelit/cit-challenge-persist
         ports:
         - containerPort: 8080
-      imagePullSecrets:
-      - name: registry.gitlab.com

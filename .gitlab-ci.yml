@@ -2,6 +2,7 @@ image: docker:latest
 
 services:
 - docker:dind
+- maven:3-jdk-8
 
 variables:
   DOCKER_DRIVER: overlay
@@ -13,7 +14,6 @@ stages:
 #- deploy
 
 maven-build:
-  image: maven:3-jdk-8
   stage: build
   script: "mvn package -B"
   artifacts:
@@ -21,7 +21,6 @@ maven-build:
     - target/*.jar
 
 docker-build:
-  image: docker:dind
   stage: package
   script:
     - docker build -t cit-challenge-persist .

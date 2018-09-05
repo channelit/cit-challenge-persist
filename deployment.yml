@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: actuator-sample
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: cit-challenge-persist
+    spec:
+      containers:
+      - name: persist-container
+        image: registry.gitlab.com/marcolenzo/actuator-sample
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: registry.gitlab.com

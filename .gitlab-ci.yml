@@ -1,5 +1,8 @@
 image: docker:latest
 
+services:
+- docker:dind
+
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_HOST: tcp://localhost:2375
@@ -19,7 +22,6 @@ maven-build:
     - target/*.jar
 
 docker-build:
-  image: docker:stable
   stage: package
   script:
     - docker build -t cit-challenge-persist .

@@ -1,0 +1,88 @@
+
+variables:
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+
+cache:
+  paths:
+  - .m2/repository
+
+.validate: &validate
+  stage: build
+  script:
+  - 'mvn $MAVEN_CLI_OPTS test-compile'
+
+.verify: &verify
+  stage: test
+  script:
+  - 'mvn $MAVEN_CLI_OPTS verify site site:stage'
+  except:
+  - master
+
+# Validate merge requests using JDK8
+validate:jdk8:
+  <<: *validate
+  image: maven:3.3.9-jdk-8
+
+# Verify merge requests using JDK7
+verify:jdk7:
+  <<: *verify
+  image: maven:3.3.9-jdk-7
+
+# Verify merge requests using JDK8
+verify:jdk8:
+  <<: *verify
+  image: maven:3.3.9-jdk-8
+
+deploy:jdk8:
+  # Use stage test here, so the pages job may later pickup the created site.
+  stage: test
+  script:
+  - 'mvn $MAVEN_CLI_OPTS deploy site site:stage'
+  only:
+  - master
+  artifacts:
+    paths:
+    - target/cit-challenge-persist-1.0-SNAPSHOT.jar
+  image: maven:3.3.9-jdk-8
+
+
+pages:
+  image: busybox:latest
+  stage: deploy
+  script:
+  - mv target/cit-challenge-persist-1.0-SNAPSHOT.jar public
+  dependencies:
+  - deploy:jdk8
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
+
+
+## This file is a template, and might need editing before it works on your project.
+## Official docker image.
+#image: docker:latest
+#
+#services:
+#- docker:dind
+#
+#before_script:
+#- docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+#
+#build-master:
+#  stage: build
+#  script:
+#  - docker build --pull -t "$CI_REGISTRY_IMAGE" .
+#  - docker push "$CI_REGISTRY_IMAGE"
+#  only:
+#  - master
+#
+#build:
+#  stage: build
+#  script:
+#  - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+#  - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+#  except:
+#  - master

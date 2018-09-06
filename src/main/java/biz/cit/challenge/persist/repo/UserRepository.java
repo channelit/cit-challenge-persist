@@ -1,12 +1,12 @@
 package biz.cit.challenge.persist.repo;
 
-import biz.cit.challenge.persist.domain.Person;
+import biz.cit.challenge.persist.domain.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PersonRepo extends JpaRepository<Person, String> {
+public interface UserRepository extends JpaRepository<User, String> {
 	
 	
 }

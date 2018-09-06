@@ -2,9 +2,7 @@ package biz.cit.challenge.persist.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotNull;
@@ -12,20 +10,18 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.Length;
+import biz.cit.challenge.persist.domain.Office;
 
 import biz.cit.challenge.persist.domain.Model;
 
 @Entity
-public class Person extends Model {
+public class User extends Model {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5835759193598838753L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
 
 	@NotNull
 	private String firstName;
@@ -42,8 +38,11 @@ public class Person extends Model {
 	private String suffix;
 
 	@Column(unique = true, columnDefinition = "CHAR(6)")
+	@Length(min=6, max=6, message = "Incorrect length for the user's unique identifier.")
 	private String uniqueIdentifier;
 
+	private Office office;
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -100,6 +99,15 @@ public class Person extends Model {
 		this.uniqueIdentifier = uniqueIdentifier;
 	}
 
+	@ManyToOne
+	public Office getOffice() {
+		return office;
+	}
+
+	public void setOffice(Office office) {
+		this.office = office;
+	}
+
 	@PrePersist
 	@PreUpdate
 	void updateInitial() {
@@ -116,10 +124,10 @@ public class Person extends Model {
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof Person)) {
+		if (!(obj instanceof User)) {
 			return false;
 		}
-		Person rhs = (Person) obj;
+		User rhs = (User) obj;
 		return new EqualsBuilder().appendSuper(super.equals(obj)).append(getUsername(), rhs.getUsername())
 				.append(getUniqueIdentifier(), rhs.getUniqueIdentifier()).append(getFirstName(), rhs.getFirstName())
 				.append(getMiddleName(), rhs.getMiddleName()).append(getInitial(), rhs.getInitial())
@@ -137,7 +145,7 @@ public class Person extends Model {
 
 	@Override
 	public String toString() {
-		return String.format("Customer[id=%d, firstName='%s', lastName='%s']", id, firstName, lastName);
+		return String.format("Customer[id=%d, firstName='%s', lastName='%s']", getId(), firstName, lastName);
 	}
 
 }

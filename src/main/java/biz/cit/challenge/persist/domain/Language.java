@@ -1,23 +1,20 @@
 package biz.cit.challenge.persist.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import biz.cit.challenge.persist.domain.Model;
 
 @Entity
-public class Skill extends Model {
+public class Language extends Model {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8882010196946793L;
+	private static final long serialVersionUID = -8256052881066928190L;
 
 	@NotNull
-	@Column(unique=true)
 	private String name;
 
 	public String getName() {
@@ -36,10 +33,10 @@ public class Skill extends Model {
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof Skill)) {
+		if (!(obj instanceof Language)) {
 			return false;
 		}
-		Skill rhs = (Skill) obj;
+		Language rhs = (Language) obj;
 		return new EqualsBuilder().appendSuper(super.equals(obj)).append(getName(), rhs.getName()).isEquals();
 	}
 
@@ -52,6 +49,7 @@ public class Skill extends Model {
 
 	@Override
 	public String toString() {
-		return String.format("Skill[id=%d, name='%s']", getId(), name);
+		return String.format("Language[id=%d, name='%s']", getId(), name);
 	}
+
 }

@@ -2,6 +2,7 @@ package biz.cit.challenge.persist.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -16,7 +17,7 @@ import biz.cit.challenge.persist.domain.Office;
 import biz.cit.challenge.persist.domain.Model;
 
 @Entity
-public class User extends Model {
+public class Person extends Model {
 
 	/**
 	 * 
@@ -41,8 +42,12 @@ public class User extends Model {
 	@Length(min=6, max=6, message = "Incorrect length for the user's unique identifier.")
 	private String uniqueIdentifier;
 
+	@ManyToOne
 	private Office office;
 	
+	@ManyToOne
+	private Person supervisor;
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -100,6 +105,7 @@ public class User extends Model {
 	}
 
 	@ManyToOne
+	@JoinColumn(name="office_id")
 	public Office getOffice() {
 		return office;
 	}
@@ -124,10 +130,10 @@ public class User extends Model {
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof User)) {
+		if (!(obj instanceof Person)) {
 			return false;
 		}
-		User rhs = (User) obj;
+		Person rhs = (Person) obj;
 		return new EqualsBuilder().appendSuper(super.equals(obj)).append(getUsername(), rhs.getUsername())
 				.append(getUniqueIdentifier(), rhs.getUniqueIdentifier()).append(getFirstName(), rhs.getFirstName())
 				.append(getMiddleName(), rhs.getMiddleName()).append(getInitial(), rhs.getInitial())
@@ -145,7 +151,7 @@ public class User extends Model {
 
 	@Override
 	public String toString() {
-		return String.format("Customer[id=%d, firstName='%s', lastName='%s']", getId(), firstName, lastName);
+		return String.format("User[id=%d, firstName='%s', lastName='%s']", getId(), firstName, lastName);
 	}
 
 }

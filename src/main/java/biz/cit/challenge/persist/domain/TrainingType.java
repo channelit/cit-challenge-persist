@@ -3,15 +3,13 @@ package biz.cit.challenge.persist.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.validator.constraints.Length;
-
 import biz.cit.challenge.persist.domain.Model;
 
 @Entity
-public class Office extends Model {
-
+public class TrainingType extends Model {
 
 	/**
 	 * 
@@ -19,11 +17,12 @@ public class Office extends Model {
 	private static final long serialVersionUID = -3437064495223350131L;
 
 	@NotNull
-	@Column(unique = true, columnDefinition = "CHAR(4)")
-	@Length(min = 4, max = 4, message = "Incorrect length for the office code.")
+	@Column(unique = true)
+	private String name;
+
 	private String code;
 
-	private String name;
+	private boolean isMandatory;
 
 	public String getName() {
 		return name;
@@ -41,6 +40,14 @@ public class Office extends Model {
 		this.code = code;
 	}
 
+	public boolean isMandatory() {
+		return isMandatory;
+	}
+
+	public void setMandatory(boolean isMandatory) {
+		this.isMandatory = isMandatory;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
@@ -49,23 +56,26 @@ public class Office extends Model {
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof Office)) {
+		if (!(obj instanceof TrainingType)) {
 			return false;
 		}
-		Office rhs = (Office) obj;
-		return new EqualsBuilder().appendSuper(super.equals(obj)).append(getName(), rhs.getName()).append(getCode(), rhs.getCode()).isEquals();
+		TrainingType rhs = (TrainingType) obj;
+		return new EqualsBuilder().appendSuper(super.equals(obj)).append(getName(), rhs.getName())
+				.append(getCode(), rhs.getCode()).append(isMandatory(), rhs.isMandatory()).isEquals();
 	}
 
 	@Override
 	public int hashCode() {
 		HashCodeBuilder hcb = new HashCodeBuilder(89, 2339);
-		hcb = hcb.append(serialVersionUID).appendSuper(super.hashCode()).append(getName()).append(getCode());
+		hcb = hcb.append(serialVersionUID).appendSuper(super.hashCode()).append(getName()).append(getCode())
+				.append(isMandatory());
 		return hcb.toHashCode();
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Office[id=%d, firstName='%s', lastName='%s']", getId(), name, code);
+		return String.format("TrainingType[id=%d, name='%s', code='%s', mandatory='%s']", getId(), name, code,
+				isMandatory);
 	}
 
 }

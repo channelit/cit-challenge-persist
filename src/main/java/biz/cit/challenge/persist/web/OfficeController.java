@@ -1,21 +1,15 @@
 package biz.cit.challenge.persist.web;
 
 import biz.cit.challenge.persist.domain.Office;
-import biz.cit.challenge.persist.domain.Office;
 import biz.cit.challenge.persist.exception.ResourceNotFoundException;
 import biz.cit.challenge.persist.repo.OfficeRepository;
-import biz.cit.challenge.persist.repo.OfficeRepository;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;

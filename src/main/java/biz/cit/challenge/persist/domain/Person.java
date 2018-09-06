@@ -15,7 +15,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.Length;
 import biz.cit.challenge.persist.domain.Office;
-
+import biz.cit.challenge.persist.UserRole;
 import biz.cit.challenge.persist.domain.Model;
 
 @Entity
@@ -54,6 +54,9 @@ public class Person extends Model {
 
 	@ManyToOne
 	private Person supervisor;
+	
+	@NotNull
+	private UserRole role;
 
 	public String getFirstName() {
 		return firstName;
@@ -111,6 +114,22 @@ public class Person extends Model {
 
 	public void setOffice(Office office) {
 		this.office = office;
+	}
+
+	public Person getSupervisor() {
+		return supervisor;
+	}
+
+	public void setSupervisor(Person supervisor) {
+		this.supervisor = supervisor;
+	}
+
+	public UserRole getRole() {
+		return role;
+	}
+
+	public void setRole(UserRole role) {
+		this.role = role;
 	}
 
 	@PrePersist

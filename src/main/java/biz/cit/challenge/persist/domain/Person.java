@@ -32,7 +32,7 @@ public class Person extends Model {
 	private String firstName;
 
 	@NotNull
-	@Length(min = 1, max = 30, message = "First name should be between 1 to 15 characters.")
+	@Length(min = 1, max = 30, message = "Last name should be between 1 to 30 characters.")
 	@Pattern(message = "The identifier can only contain alphanumberic characters.", regexp = "^[A-Za-z-\']{1,30}$")
 	private String lastName;
 

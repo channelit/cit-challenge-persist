@@ -25,6 +25,7 @@ public class TrainingType extends Model {
 
 	private boolean isMandatory;
 
+	//TODO: fix this
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Skill.class)
 	private Set<Skill> attainableSkills;
 

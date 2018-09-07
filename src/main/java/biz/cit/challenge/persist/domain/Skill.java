@@ -20,13 +20,26 @@ public class Skill extends Model {
 	@Column(unique=true)
 	private String name;
 
+	private Skill category;
+
 	public String getName() {
 		return name;
 	}
+	
 
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public Skill getCategory() {
+		return category;
+	}
+
+
+	public void setCategory(Skill category) {
+		this.category = category;
+	}
+
 
 	@Override
 	public boolean equals(Object obj) {

@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  rest:
+    build:
+      context: .
+      dockerfile: Dockerfile-local
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PASSWORD
+    networks:
+      - persist
+    ports:
+      - 8080:8080
+  db:
+    image: postgres
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=ice
+      - POSTGRES_DB=ice
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_PASSWORD
+#    volumes:
+#      - "pgdata:/var/lib/postgresql/data/pgdata"
+    networks:
+      - persist
+    ports:
+      - 5432:5432
+
+volumes:
+  pgdata:
+
+networks:
+  persist:

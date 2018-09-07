@@ -2,8 +2,7 @@ package biz.cit.challenge.persist.domain;
 
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -25,7 +24,8 @@ public class TrainingType extends Model {
 	private String code;
 
 	private boolean isMandatory;
-	
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Skill.class)
 	private Set<Skill> attainableSkills;
 
 	public String getName() {

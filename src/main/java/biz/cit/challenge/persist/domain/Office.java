@@ -20,9 +20,10 @@ public class Office extends Model {
 
 	@NotNull
 	@Column(unique = true, columnDefinition = "CHAR(4)")
-	@Length(min = 4, max = 4, message = "Incorrect length for the office code.")
+	@Length(min = 1, max = 4, message = "Incorrect length for the office code.")
 	private String code;
 
+	@NotNull
 	private String name;
 
 	public String getName() {

@@ -1,0 +1,9 @@
+version: '3.4'
+
+
+
+
+db:
+  image: postgres
+  restart: always
+

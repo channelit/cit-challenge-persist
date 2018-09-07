@@ -1,5 +1,7 @@
 package biz.cit.challenge.persist.domain;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
@@ -23,6 +25,8 @@ public class TrainingType extends Model {
 	private String code;
 
 	private boolean isMandatory;
+	
+	private Set<Skill> attainableSkills;
 
 	public String getName() {
 		return name;
@@ -46,6 +50,14 @@ public class TrainingType extends Model {
 
 	public void setMandatory(boolean isMandatory) {
 		this.isMandatory = isMandatory;
+	}
+
+	public Set<Skill> getAttainableSkills() {
+		return attainableSkills;
+	}
+
+	public void setAttainableSkills(Set<Skill> attainableSkills) {
+		this.attainableSkills = attainableSkills;
 	}
 
 	@Override

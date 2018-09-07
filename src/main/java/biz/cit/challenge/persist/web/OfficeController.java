@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
-@RequestMapping("/office")
+@RequestMapping("/api/office")
 @RestController
 public class OfficeController {
 

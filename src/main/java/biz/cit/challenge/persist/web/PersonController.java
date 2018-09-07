@@ -20,13 +20,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
-@RequestMapping("/people")
+@RequestMapping("/api/people")
 @RestController
 public class PersonController {
 
@@ -87,7 +86,8 @@ public class PersonController {
 	}
 
 	@RequestMapping(path = "/assignIdentifier", method = RequestMethod.POST)
-	public Person addUniqueIdentifier(@RequestParam("personId") String personId, @RequestParam("uniqueId") String uniqueId) {
+	public Person addUniqueIdentifier(@RequestParam("personId") String personId,
+			@RequestParam("uniqueId") String uniqueId) {
 		if (!personRepository.existsById(personId)) {
 			throw new ResourceNotFoundException("Person not found with id " + personId);
 		}
@@ -116,9 +116,10 @@ public class PersonController {
 			return personRepository.save(person);
 		}).orElseThrow(() -> new ResourceNotFoundException("Person not found with id " + personId));
 	}
-	
+
 	@RequestMapping(path = "/assignSupervisor", method = RequestMethod.POST)
-	public Person assignSupervisor(@RequestParam("personId") String personId, @RequestParam("supervisorId") String supervisorId) {
+	public Person assignSupervisor(@RequestParam("personId") String personId,
+			@RequestParam("supervisorId") String supervisorId) {
 		if (!personRepository.existsById(personId)) {
 			throw new ResourceNotFoundException("Person not found with id " + personId);
 		}
@@ -127,19 +128,24 @@ public class PersonController {
 			throw new ResourceNotFoundException("Supervisor not found with id " + supervisorId);
 		}
 
-		Person supervisor = personRepository.findById(supervisorId).filter(p -> UserRole.SUPERVISOR_AGENT.equals(p.getRole()))
+		Person supervisor = personRepository.findById(supervisorId)
+				.filter(p -> UserRole.SUPERVISOR_AGENT.equals(p.getRole()))
 				.orElseThrow(() -> new ResourceNotFoundException("Supervisor not found with id " + supervisorId));
-		
+
 		return personRepository.findById(personId).map(person -> {
 			person.setSupervisor(supervisor);
 			return personRepository.save(person);
 		}).orElseThrow(() -> new ResourceNotFoundException("Person not found with id " + personId));
 	}
-	
+
+	@RequestMapping(path = "/supervisors", method = RequestMethod.GET)
+	public List<Person> getSupervisors() {
+		return personRepository.findByRole(UserRole.SUPERVISOR_AGENT);
+	}
+
 	@RequestMapping(path = "/roles", method = RequestMethod.GET)
 	public List<UserRole> getRoles() {
 		return Arrays.asList(UserRole.values());
 	}
-	
-	
+
 }
